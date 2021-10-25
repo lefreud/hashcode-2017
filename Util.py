@@ -29,13 +29,24 @@ def parse_in(input: Situation) -> dict:
     return {"dim": (h, w), "radius": r, "backbone_price": pb, "router_price": pr,
             "budget": b, "backbone_pos": (bx, by), "grid": np_array}
 
-def parse_out(backbone_cells: list[tuple], router_cells: list[tuple]):
-    pass
+def parse_out(backbone_cells: list[tuple], router_cells: list[tuple], filename: str):
+    with open(f"data/output/{filename}", "w") as file:
+        file.write(f"{len(backbone_cells)}\n")
+        for cell in backbone_cells:
+            file.write(f"{cell[0]} {cell[1]}\n")
+        file.write(f"{len(router_cells)}\n")
+        for cell in router_cells:
+            file.write(f"{cell[0]} {cell[1]}\n")
 
 
 def main():
-    out = parse_in(Situation.CHARLESTON)
-    print(out["grid"])
+    #out = parse_in(Situation.CHARLESTON)
+    #print(out["grid"])
+
+    backbone_cells = [(1, 1), (2, 2), (3, 3)]
+    router_cells = [(1, 1), (2, 2), (3, 3)]
+
+    parse_out(backbone_cells, router_cells, "charleston_road.out")
 
 if __name__ == "__main__":
     main()
