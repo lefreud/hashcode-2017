@@ -1,4 +1,6 @@
 import numpy as np
+import math
+import Util
 
 
 class Building:
@@ -19,7 +21,7 @@ class Building:
                     self.targets.append((i,j))
 
     def calculer_score(self, liste_routers: list[tuple], liste_backbones: list[tuple]) -> int:
-        return 1000*len(self.targets) + self.budget - len(liste_backbones)*self.cout_backbones - len(liste_routers)*self.cout_routers
+        return 1000*len(self.targets) + self.budget - len(liste_backbones)*self.backbone_price - len(liste_routers)*self.router_price
 
     def algo(self, targets, liste_routeur, liste_connection):
         if len(targets) == 0 :
@@ -43,8 +45,59 @@ class Building:
 
         return [score_max, best_list_routeur, best_list_connection]
 
-    def calculer_liaison_routeur(self, target, liste_connection):
-        #TODO
+    def calculer_liaison_routeur(self, target: tuple, liste_connection: list[tuple]) -> list[tuple]:
+        min_distance = math.inf
+        for connection in liste_connection:
+            distance = self.get_distance_liaison(connection, target)
+            if self.get_distance_liaison(target, connection) < min_distance:
+                start = connection
+                min_distance = distance
+
+        if self.get_distance_liaison(target, self.backbone_pos) < min_distance:
+            start = self.backbone_pos
+
+        return self.get_path(start, target)
+
+    def get_distance_liaison(self, start:tuple, target:tuple):
+        diago_distance = min(abs(start[0] - target[0]), abs(start[1] - target[1]))
+        straight_distance = max(abs(start[0] - target[0]), abs(start[1] - target[1])) - diago_distance
+        return diago_distance + straight_distance
+    
+    def get_path(self, start:tuple, target: tuple):
+        # Diago
+        diago_distance = min(abs(start[0] - target[0]), abs(start[1] - target[1]))
+        path_positions = []
+        
+        if target[0] > start[0]:
+            step_y = 1
+        else:
+            step_y = -1
+        if target[1] > start[1]:
+            step_x = 1
+        else:
+            step_x = -1
+        
+        for i in range(diago_distance):
+            path_positions.append((start[0] + step_y, start[1] + step_x))
+        
+        # Straight
+        position_after_diago = (start[0] + diago_distance * step_y, start[1] + diago_distance * step_x)
+        if target[0] == start[0]:
+            step_x = 0
+        elif target[1] == start[1]:
+            step_y = 0
+            
+        straight_distance = max(abs(start[0] - target[0]), abs(start[1] - target[1])) - diago_distance
+        for i in range(straight_distance):
+            path_positions.append((position_after_diago[0] + step_y, position_after_diago[1] + step_x))
+        return path_positions
 
     def diminuer_grid(self, new_target):
         #TODO
+        pass
+
+if __name__ == "__main__":
+    b = Building(Util.parse_in(Util.Situation.CHARLESTON))
+    print(b.calculer_liaison_routeur((0,0), []))
+    #print(b.backbone_pos)
+    #print(b.get_distance_liaison((0,0), (120,90)))
