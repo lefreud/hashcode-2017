@@ -1,6 +1,7 @@
 from enum import Enum
 import numpy as np
 
+
 class Situation(Enum):
     """
     Enum of the possible situations
@@ -11,6 +12,7 @@ class Situation(Enum):
     HIGHER = f"{_root}/lets_go_higher.in"
     OPERA = f"{_root}/opera.in"
     LONDRES = f"{_root}/rue_de_londres.in"
+
 
 def parse_in(input: Situation) -> dict:
     with open(input.value) as file:
@@ -28,6 +30,7 @@ def parse_in(input: Situation) -> dict:
     
     return {"dim": (h, w), "radius": r, "backbone_price": pb, "router_price": pr,
             "budget": b, "backbone_pos": (bx, by), "grid": np_array}
+
 
 def parse_out(backbone_cells: list[tuple], router_cells: list[tuple], filename: str):
     with open(f"data/output/{filename}", "w") as file:
@@ -47,6 +50,7 @@ def main():
     router_cells = [(1, 1), (2, 2), (3, 3)]
 
     parse_out(backbone_cells, router_cells, "charleston_road.out")
+
 
 if __name__ == "__main__":
     main()
