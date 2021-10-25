@@ -41,7 +41,7 @@ class Building:
         for target in targets:
             connections_temp = self.calculer_liaison_routeur(target, liste_connection)
             liste_connection_temp = liste_connection
-            liste_connection_temp.extends(connections_temp)
+            liste_connection_temp.extend(connections_temp)
             liste_routeur_temp = liste_routeur
             liste_routeur_temp.append(target)
             targets_diminuer = self.diminuer_grid(target, targets)
@@ -102,6 +102,7 @@ class Building:
 
     def diminuer_grid(self, new_target, targets):
         targets_temp = targets
+        targets.remove(new_target)
         for target in targets_temp:
             if abs(new_target[0] - target[0]) <= self.router_range and abs(new_target[1] - target[1]) <= self.router_range:
                 if self.check_if_wall(target, new_target):
@@ -115,7 +116,7 @@ class Building:
                 return True
         return False
 
-    def update_router_and_connection_grid(self, liste_connection, liste_router):
+    def update_router_and_connection_grid(self, liste_router, liste_connection):
         for connection in liste_connection:
             self.connection_coverage_grid[connection[0], connection[1]] = 1
         for router in liste_router:

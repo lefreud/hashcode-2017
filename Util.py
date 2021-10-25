@@ -7,7 +7,7 @@ class Situation(Enum):
     Enum of the possible situations
     """
     _root = "data/input"
-
+    TEST = f"{_root}/test.in"
     CHARLESTON = f"{_root}/charleston_road.in"
     HIGHER = f"{_root}/lets_go_higher.in"
     OPERA = f"{_root}/opera.in"
