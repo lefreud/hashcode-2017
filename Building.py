@@ -12,5 +12,5 @@ class Building:
         self.budget = budget
         self.backbone_pos = backbone_pos
 
-
-
+    def calculer_score(self, liste_routers: list[tuple], liste_backbones: list[tuple]) -> int:
+        return 1000*len(self.liste_targets) + self.budget - len(liste_backbones)*self.cout_backbones - len(liste_routers)*self.cout_routers
