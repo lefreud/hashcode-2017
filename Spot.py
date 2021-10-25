@@ -1,7 +1,7 @@
 from enum import Enum
 
 
-class Spot(Enum):
+class SpotType(Enum):
     WALL = 0
     TARGET = 1
     VOID = 2
