@@ -71,7 +71,7 @@ class Building:
         straight_distance = max(abs(start[0] - target[0]), abs(start[1] - target[1])) - diago_distance
         return diago_distance + straight_distance
 
-    def get_path(self, start:tuple, target: tuple):
+    def get_path(self, start: tuple, target: tuple):
         # Diago
         diago_distance = min(abs(start[0] - target[0]), abs(start[1] - target[1]))
         path_positions = []
@@ -85,19 +85,19 @@ class Building:
         else:
             step_x = -1
 
-        for i in range(diago_distance):
-            path_positions.append((start[0] + step_y, start[1] + step_x))
+        for i in range(1, diago_distance):
+            path_positions.append((start[0] + step_y * i, start[1] + step_x * i))
 
         # Straight
         position_after_diago = (start[0] + diago_distance * step_y, start[1] + diago_distance * step_x)
-        if target[0] == start[0]:
-            step_x = 0
-        elif target[1] == start[1]:
+        if target[0] == position_after_diago[0]:
             step_y = 0
+        elif target[1] == position_after_diago[1]:
+            step_x = 0
 
         straight_distance = max(abs(start[0] - target[0]), abs(start[1] - target[1])) - diago_distance
-        for i in range(straight_distance):
-            path_positions.append((position_after_diago[0] + step_y, position_after_diago[1] + step_x))
+        for i in range(straight_distance + 1):
+            path_positions.append((position_after_diago[0] + step_y * i, position_after_diago[1] + step_x * i))
         return path_positions
 
     def diminuer_grid(self, new_target, targets):
