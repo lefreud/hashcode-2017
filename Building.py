@@ -10,6 +10,41 @@ class Building:
         self.router_price = data['router_price']
         self.budget = data['budget']
         self.backbone_pos = data['backbone_pos']
+        self.targets = []
+
+    def create_liste_targets(self):
+        for i in range(len(self.grid)):
+            for j in range(len(self.grid[i])):
+                if self.grid[i][j] == ".":
+                    self.targets.append((i,j))
 
     def calculer_score(self, liste_routers: list[tuple], liste_backbones: list[tuple]) -> int:
-        return 1000*len(self.liste_targets) + self.budget - len(liste_backbones)*self.cout_backbones - len(liste_routers)*self.cout_routers
+        return 1000*len(self.targets) + self.budget - len(liste_backbones)*self.cout_backbones - len(liste_routers)*self.cout_routers
+
+    def algo(self, targets, liste_routeur, liste_connection):
+        if len(targets) == 0 :
+            score = self.calculer_score(liste_routeur, liste_connection)
+            return [score, liste_routeur, liste_connection]
+        score_max = -1
+        best_list_routeur = []
+        best_list_connection = []
+        for target in targets:
+            connections_temp = self.calculer_liaison_routeur(target, liste_connection)
+            liste_connection_temp = liste_connection
+            liste_connection_temp.extends(connections_temp)
+            liste_routeur_temp = liste_routeur
+            liste_routeur_temp.append(target)
+            targets_diminuer = self.diminuer_grid(target)
+            score_temp, liste_routeur, liste_connection = self.algo(targets_diminuer, liste_routeur_temp, liste_connection_temp)
+            if score_temp < score_max:
+                score_max = score_temp
+                best_list_connection = liste_connection_temp
+                best_list_routeur = liste_routeur_temp
+
+        return [score_max, best_list_routeur, best_list_connection]
+
+    def calculer_liaison_routeur(self, target, liste_connection):
+        #TODO
+
+    def diminuer_grid(self, new_target):
+        #TODO
