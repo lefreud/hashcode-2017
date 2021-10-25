@@ -14,6 +14,10 @@ class Building:
         self.walls = []
         self.create_liste_targets_and_mur()
 
+        self.router_coverage_grid = np.zeros(self.grid.shape)
+
+        self.connection_coverage_grid = np.zeros(self.grid.shape)
+
     def create_liste_targets_and_mur(self):
         for i in range(len(self.grid)):
             for j in range(len(self.grid[i])):
@@ -64,3 +68,9 @@ class Building:
             if min(router_pos[0],target[0]) <= wall[0] <= max(router_pos[0],target[0]) and min(router_pos[1],target[1]) <= wall[1] <= max(router_pos[1],target[1]):
                 return True
         return False
+
+    def update_router_and_connection_grid(self, liste_connection, liste_router):
+        for connection in liste_connection:
+            self.connection_coverage_grid[connection[0], connection[1]] = 1
+        for router in liste_router:
+            self.router_coverage_grid[router[0], router[1]] = 1
