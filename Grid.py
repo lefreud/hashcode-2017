@@ -5,8 +5,7 @@ from typing import *
 class GridVisualizer:
     @staticmethod
     def visualize(spot_types_grid: np.ndarray, router_coverage_grid: Optional[np.ndarray] = None,
-                  backbone_coverage_grid: Optional[np.ndarray] = None, initial_backbone: Tuple = None,
-                  router_cells: List[tuple] = None):
+                  backbone_coverage_grid: Optional[np.ndarray] = None, initial_backbone: Tuple = None):
         h, w = spot_types_grid.shape
         out = ""
         out += """
@@ -35,8 +34,6 @@ body {
                 classes = []
                 if initial_backbone == (y, x):
                     spot_text = '<strong>b</strong>'
-                elif (y, x) in router_cells:
-                    spot_text = 'r'
                 else:
                     spot_text = spot_types_grid[y, x]
                 if backbone_coverage_grid is not None and backbone_coverage_grid[y, x] == 1:
