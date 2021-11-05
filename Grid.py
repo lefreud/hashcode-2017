@@ -1,8 +1,5 @@
 import numpy as np
-from matplotlib.colors import ListedColormap
 from typing import *
-
-custom_color_map = ListedColormap(["black", "white", "brown", "yellow", "green", "blue"])
 
 
 class GridVisualizer:
@@ -19,10 +16,13 @@ body {
   font-family: Courier new;
 }
 .router-covered {
-    background: chartreuse;
+    background: #ff3a3a;
 }
 .backbone-covered {
-    background: aqua;
+    background: #2979ff;
+}
+.router-covered.backbone-covered {
+    background: #945A9D;
 }
 
 </style>
@@ -34,13 +34,18 @@ body {
                 classes = []
                 if backbone_coverage_grid is not None and backbone_coverage_grid[y, x] == 1:
                     classes.append("backbone-covered")
-                elif router_coverage_grid is not None and router_coverage_grid[y, x] == 1:
+                if router_coverage_grid is not None and router_coverage_grid[y, x] == 1:
                     classes.append("router-covered")
                 classes = " ".join(classes)
                 out += f"<span class=\"{classes}\">{spot_types_grid[y, x]}</span>"
             out += "<br>"
 
         out += """
+        <br><br>
+        <strong>Legend</strong><br><br>
+        <span class='backbone-covered'>&nbsp&nbsp</span>: Backbone-covered<br><br>
+        <span class='router-covered'>&nbsp&nbsp</span>: Router-covered<br><br>
+        <span class='router-covered backbone-covered'>&nbsp&nbsp</span>: Router-covered AND Backbone-covered<br><br>
         </body>
         </html>
         """
